@@ -1,4 +1,4 @@
 # DjangoAprender
 Aprendendo como funciona um projeto de Django
 ## Objetivos
--[x] criar páginas 
+- [x] criar páginas 
