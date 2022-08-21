@@ -15,8 +15,9 @@ def funcao_views(request):
     return render(request, 'myapp/passo2.html')
 def funcao2(request):
     idade=22
-    dados={"anos":idade}
-    return render(request, 'passo3.html')
+    nome='marilia'
+    dados={"anos":idade,'nome':nome}
+    return render(request, 'passo3.html',dados)
 def funcao3(request):
     return render(request, 'passo4.html')
 
