@@ -6,3 +6,5 @@ def funcao_views(request):
     return render(request, 'myapp/passo2.html')
 def funcao2(request):
     return render(request, 'passo3.html')
+def funcao3(request):
+    return render(request, 'passo4.html')
