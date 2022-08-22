@@ -1,26 +1,39 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from myapp.models import Pessoa
-def index(request):
-    nome_value = request.user
-    id_value = request.user.id
 
-    #dicionario exemplo
-    #dados = {"chave":"valor","key":"value"}
+def cadastrar_submit(request):
+    if request.POST:
+        peso = float(request.POST.get('peso').replace(",","."))
+        altura = float(request.POST.get('altura').replace(",","."))
+        usuario = request.user
+        pessoa = verificarSeUsuarioJaTemCadastradoSeuPesoeAltura(usuario,peso,altura)
 
+        return redirect('/verIMC')
 
-    dados = {"nome":nome_value,"id":id_value}
-    print(type(dados))
-    return render(request, "myapp/home.html",dados)
-def funcao_views(request):
-    return render(request, 'myapp/passo2.html')
-def funcao2(request):
-    idade=22
-    nome='marilia'
-    dados={"anos":idade,'nome':nome}
-    return render(request, 'passo3.html',dados)
-def funcao3(request):
-    return render(request, 'passo4.html')
+def verificarSeUsuarioJaTemCadastradoSeuPesoeAltura(usuario,peso,altura):
+    try:
+        pessoa = Pessoa.objects.get(usuario = usuario)
+
+        pessoa.peso = peso
+        pessoa.altura = altura
+        pessoa.save()
+    except:
+        pessoa = Pessoa.objects.create(usuario = usuario,
+                           peso= peso,
+                           altura=altura)
+    return pessoa
+def home(request):
+    return render(request, 'myapp/home.html')
+def cadastrar_altura_peso(request):
+    return render(request, 'myapp/cadastrar.html')
+
+def excluir(request):
+    usuario = request.user
+    pessoa = Pessoa.objects.get(usuario=usuario)
+    pessoa.delete()
+    return redirect('/')
+
 
 def verIMC(request):
     usuario = request.user
@@ -46,8 +59,3 @@ def verIMC(request):
 
     dados = {"pessoa":pessoa,"imc":valor,"classificacao":classificacao}
     return render(request, 'myapp/visualizador_de_imc.html',dados)
-
-"""
-def soma(a,b):
-    return a+b
-"""
