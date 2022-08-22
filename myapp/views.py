@@ -1,27 +1,30 @@
 from django.shortcuts import render, redirect
 
-from myapp.models import Pessoa
+from myapp.models import Pessoa, Aluno
 
 def cadastrar_submit(request):
     if request.POST:
         peso = float(request.POST.get('peso').replace(",","."))
         altura = float(request.POST.get('altura').replace(",","."))
         usuario = request.user
-        pessoa = verificarSeUsuarioJaTemCadastradoSeuPesoeAltura(usuario,peso,altura)
+        idade= int(request.POST.get('idade'))
+        pessoa = verificarSeUsuarioJaTemCadastradoSeuPesoeAlturaSeNaoTiverdeveCriar(usuario,peso,altura,idade)
 
         return redirect('/verIMC')
 
-def verificarSeUsuarioJaTemCadastradoSeuPesoeAltura(usuario,peso,altura):
+def verificarSeUsuarioJaTemCadastradoSeuPesoeAlturaSeNaoTiverdeveCriar(usuario,peso,altura,idade):
     try:
         pessoa = Pessoa.objects.get(usuario = usuario)
-
+        pessoa.idade=idade
         pessoa.peso = peso
         pessoa.altura = altura
         pessoa.save()
     except:
         pessoa = Pessoa.objects.create(usuario = usuario,
                            peso= peso,
-                           altura=altura)
+                           altura=altura,
+                            idade=idade)
+
     return pessoa
 def home(request):
     return render(request, 'myapp/home.html')
@@ -59,3 +62,13 @@ def verIMC(request):
 
     dados = {"pessoa":pessoa,"imc":valor,"classificacao":classificacao}
     return render(request, 'myapp/visualizador_de_imc.html',dados)
+def verIMC2(request):
+    usuario = request.user
+    aluno = Aluno.objects.get(usuario = usuario)
+
+
+
+
+    dados = {"aluno":aluno}
+    return render(request, 'myapp/visualizadordealuno.html',dados)
+

@@ -8,5 +8,6 @@ urlpatterns = [
 
     path("excluir", views.excluir),
     path("verIMC", views.verIMC),
+    path("aluno", views.verIMC2),
 
 ]

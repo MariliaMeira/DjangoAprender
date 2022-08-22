@@ -7,11 +7,23 @@
   <body>
 <form action="/cadastrar/submit" enctype="multipart/form-data" method="post">
     {% csrf_token %}
+
+    <!- deve ser igual : path('cadastrar/submit', views.cadastrar_submit),
+    localizado na url.py–>
+
 Peso<p></p>
 <input name="peso"><p></p>
+
+    <!- o atributo name tem que ser igual ao
+   peso = float(request.POST.get('peso').replace(",",".")) localizado na views–>
+
+
   Altura
   <p></p>
   <input name="altura"><p></p>
+   Idade
+  <p></p>
+  <input name="idade"><p></p>
 
 <button class="btn btn-primary form-control" type="submit">Submit</button>
                     </form>
